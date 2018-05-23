@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             //Puxar WebService de Validação AQUI....
 
             if(usuarioDigitado.equals("teste") && senhaDigitada.equals("123")) {
-                chamaActivity(welcomeActivity.class);
+                chamaActivity(NavigationActivity.class);
             } else {
                 Toast.makeText(this, "Usuario ou senha inválidos!", Toast.LENGTH_LONG).show();
             }
