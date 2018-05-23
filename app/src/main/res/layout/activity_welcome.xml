@@ -23,6 +23,6 @@
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
-        android:text="TextView"
+        android:text="Nome do Usuário"
         android:textAppearance="@android:style/TextAppearance.Medium" />
 </android.widget.RelativeLayout>

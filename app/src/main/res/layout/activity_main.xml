@@ -31,8 +31,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        tools:text="Usuário" />
+        android:hint="Usuário"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/senhaEditText"
@@ -40,10 +40,10 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/usuarioEditText"
         android:layout_below="@+id/usuarioEditText"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="18dp"
         android:ems="10"
-        android:inputType="textPassword"
-        tools:text="Senha" />
+        android:hint="Senha"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/loginButton"
@@ -53,6 +53,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:onClick="autenticar"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        tools:text="LOGIN" />
+        android:text="LOGIN"
+        android:textAppearance="@android:style/TextAppearance.Medium" />
 </android.widget.RelativeLayout>

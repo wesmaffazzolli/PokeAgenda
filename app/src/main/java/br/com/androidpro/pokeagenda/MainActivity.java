@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    TextView text;
     Button login;
     EditText usuario, senha;
 
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        text = (TextView)findViewById(R.id.loginTextView);
         login = (Button)findViewById(R.id.loginButton);
         usuario = (EditText)findViewById(R.id.usuarioEditText);
         senha = (EditText)findViewById(R.id.senhaEditText);
@@ -28,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
         if(usuario.getText().toString() != "" && senha.getText().toString() != "") {
             //Validações
             String usuarioDigitado = usuario.getText().toString();
-            String senhaDigitada = usuario.getText().toString();
+            String senhaDigitada = senha.getText().toString();
+
+            //Puxar WebService de Validação AQUI....
 
             if(usuarioDigitado.equals("teste") && senhaDigitada.equals("123")) {
                 chamaActivity(welcomeActivity.class);
