@@ -1,6 +1,7 @@
 package br.com.androidpro.pokeagenda;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -25,6 +27,7 @@ public class CadastrarPokemon extends AppCompatActivity {
 
     private ImageView imagem;
     EditText nome, especie, peso, altura;
+    AlertDialog alerta;
     private final int GALERIA_IMAGENS = 1;
     private final int PERMISSAO_REQUEST = 2;
     private final int TIRAR_FOTO = 3;
@@ -84,7 +87,11 @@ public class CadastrarPokemon extends AppCompatActivity {
     protected void enviarFormularioCadastro(View view) {
         if(!nome.getText().toString().isEmpty() && !especie.getText().toString().isEmpty() && !altura.getText().toString().isEmpty() && !peso.getText().toString().isEmpty()) {
             if(imagem.getDrawable() != null) {
-
+                if("cadastroDeuBoa".equals("cadastroDeuBoa")) {
+                    instaciaDialog("Sucesso!", "O seu cadastro foi realizado.");
+                } else {
+                    instaciaDialog("Falha!", "O seu cadastro não pôde ser realizado.");
+                }
             } else {
                 Toast.makeText(this, "Selecione ou tire uma foto!", Toast.LENGTH_LONG).show();
             }
@@ -149,5 +156,25 @@ public class CadastrarPokemon extends AppCompatActivity {
             }
             return;
         }
+    }
+
+    private void instaciaDialog(String title, String msg) {
+        //Cria o gerador do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //define o titulo
+        builder.setTitle(title);
+        //define a mensagem
+        builder.setMessage(msg);
+        //define um botão como positivo
+        builder.setPositiveButton("Ok!", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+
+            }
+        });
+
+        //cria o AlertDialog
+        alerta = builder.create();
+        //Exibe
+        alerta.show();
     }
 }
