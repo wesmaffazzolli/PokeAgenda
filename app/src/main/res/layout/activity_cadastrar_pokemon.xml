@@ -7,11 +7,93 @@
     tools:context="br.com.androidpro.pokeagenda.CadastrarPokemon">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/cadastrarPokemonTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="27dp"
+        android:text="Cadastrar Pokemon"
+        android:textAppearance="@android:style/TextAppearance.Large" />
+
+    <EditText
+        android:id="@+id/nomeEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/cadastrarPokemonTextView"
+        android:layout_below="@+id/cadastrarPokemonTextView"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:hint="Nome"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/especieEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/nomeEditText"
+        android:layout_below="@+id/nomeEditText"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="Espécie"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/pesoEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/especieEditText"
+        android:layout_below="@+id/especieEditText"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:hint="Peso"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/alturaEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/pesoEditText"
+        android:layout_below="@+id/pesoEditText"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:hint="Altura"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/buttonSelecionarImagem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/alturaEditText"
+        android:layout_below="@+id/alturaEditText"
+        android:layout_marginTop="12dp"
+        android:text="Selecionar Imagem" />
+
+    <Button
+        android:id="@+id/buttonTirarFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/buttonSelecionarImagem"
+        android:layout_below="@+id/buttonSelecionarImagem"
+        android:text="Tirar Foto" />
+
+    <ImageView
+        android:id="@+id/imageViewCadastro"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/buttonSelecionarImagem"
+        android:layout_marginEnd="18dp" />
+
+    <Button
+        android:id="@+id/buttonCadastrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewCadastro"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="46dp"
-        android:text="Estou na página: Cadastrar Pokemon!" />
+        android:layout_marginTop="13dp"
+        android:onClick="enviarFormularioCadastro"
+        android:text="Cadastrar" />
+
 </android.widget.RelativeLayout>
