@@ -31,7 +31,8 @@
             android:configChanges="orientation|screenSize" />
         <activity android:name=".ConsultarPokemons" />
         <activity android:name=".PesquisarPokemon" />
-        <activity android:name=".ExibirPokemon"></activity>
+        <activity android:name=".ExibirPokemon" />
+        <activity android:name=".ListCell"></activity>
     </application>
 
 </manifest>
