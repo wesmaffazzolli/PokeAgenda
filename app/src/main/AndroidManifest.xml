@@ -2,8 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.androidpro.pokeagenda">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -23,9 +26,12 @@
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CadastrarPokemon" android:configChanges="orientation|screenSize"></activity>
+        <activity
+            android:name=".CadastrarPokemon"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".ConsultarPokemons" />
-        <activity android:name=".PesquisarPokemon"></activity>
+        <activity android:name=".PesquisarPokemon" />
+        <activity android:name=".ExibirPokemon"></activity>
     </application>
 
 </manifest>

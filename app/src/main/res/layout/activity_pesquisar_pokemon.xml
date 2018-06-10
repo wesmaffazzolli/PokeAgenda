@@ -7,11 +7,35 @@
     tools:context="br.com.androidpro.pokeagenda.PesquisarPokemon">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="22dp"
+        android:text="Pesquisar Pokemon"
+        android:textAppearance="@android:style/TextAppearance.Large" />
+
+    <EditText
+        android:id="@+id/pesquisaEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/titleTextView"
+        android:layout_below="@+id/titleTextView"
+        android:layout_marginTop="23dp"
+        android:ems="10"
+        android:hint="Digite aqui..."
+        android:inputType="textPersonName"
+        android:selectAllOnFocus="true" />
+
+    <Button
+        android:id="@+id/buttonPesquisar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pesquisaEditText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp"
-        android:text="Estou na página: Pesquisar Pokemon!" />
+        android:layout_marginTop="33dp"
+        android:onClick="pesquisar"
+        android:text="Pesquisar" />
 </android.widget.RelativeLayout>
