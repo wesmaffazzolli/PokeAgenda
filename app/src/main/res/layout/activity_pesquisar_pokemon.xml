@@ -25,7 +25,7 @@
         android:layout_below="@+id/titleTextView"
         android:layout_marginTop="23dp"
         android:ems="10"
-        android:hint="Digite aqui..."
+        android:hint="Digite aqui o nome..."
         android:inputType="textPersonName"
         android:selectAllOnFocus="true" />
 
