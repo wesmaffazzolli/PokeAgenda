@@ -1,5 +1,6 @@
 package br.com.androidpro.pokeagenda;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -80,22 +81,23 @@ public class NavigationActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_cadastrar_pokemon) {
+            chamaActivity(CadastrarPokemon.class);
+        } else if (id == R.id.nav_consultar_pokemon) {
+            chamaActivity(ConsultarPokemons.class);
+        } else if(id == R.id.nav_pesquisar_pokemon) {
+            chamaActivity(PesquisarPokemon.class);
+        } else if (id == R.id.nav_sair) {
+            this.finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void chamaActivity(Class cls) {
+        Intent it = new Intent(this, cls);
+        startActivity(it);
     }
 }
