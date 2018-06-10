@@ -12,7 +12,7 @@
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="57dp"
+        android:layout_marginTop="24dp"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
@@ -29,9 +29,10 @@
         android:id="@+id/titleEspecieTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/exibeNomeTextView"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/exibeNomeTextView"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="20dp"
         android:text="Espécie:"
         android:textAppearance="@android:style/TextAppearance.Medium" />
 
@@ -52,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/titleEspecieTextView"
         android:layout_below="@+id/titleEspecieTextView"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="13dp"
         android:text="Altura:"
         android:textAppearance="@android:style/TextAppearance.Medium" />
 
@@ -72,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/titleAlturaTextView"
         android:layout_below="@+id/titleAlturaTextView"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="12dp"
         android:text="Peso:"
         android:textAppearance="@android:style/TextAppearance.Medium" />
 
@@ -91,12 +92,12 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/titlePesoTextView"
         android:layout_below="@+id/titlePesoTextView"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="12dp"
         android:text="Treinador:"
         android:textAppearance="@android:style/TextAppearance.Medium" />
 
     <TextView
-        android:id="@+id/treinadorTextView"
+        android:id="@+id/exibeTreinadorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/titleTreinadorTextView"
@@ -104,5 +105,15 @@
         android:layout_toEndOf="@+id/titleTreinadorTextView"
         android:textAppearance="@android:style/TextAppearance.Medium"
         tools:text="xxxxxxxxxxxxxxxxxxxx" />
+
+    <Button
+        android:id="@+id/buttonFavoritar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleTreinadorTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:onClick="favoritar"
+        android:text="Favoritar" />
 
 </android.widget.RelativeLayout>
