@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void autenticar(View view) {
-        if(usuario.getText().toString() != "" && senha.getText().toString() != "") {
+        if(!usuario.getText().toString().isEmpty() && !senha.getText().toString().isEmpty()) {
             //Validações
             String usuarioDigitado = usuario.getText().toString();
             String senhaDigitada = senha.getText().toString();
