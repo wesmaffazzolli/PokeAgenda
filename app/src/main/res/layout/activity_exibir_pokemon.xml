@@ -85,4 +85,24 @@
         android:textAppearance="@android:style/TextAppearance.Medium"
         tools:text="xxxxxxxxxxxxxxxxxxxxxx" />
 
+    <TextView
+        android:id="@+id/titleTreinadorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/titlePesoTextView"
+        android:layout_below="@+id/titlePesoTextView"
+        android:layout_marginTop="18dp"
+        android:text="Treinador:"
+        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+    <TextView
+        android:id="@+id/treinadorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/titleTreinadorTextView"
+        android:layout_marginStart="13dp"
+        android:layout_toEndOf="@+id/titleTreinadorTextView"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        tools:text="xxxxxxxxxxxxxxxxxxxx" />
+
 </android.widget.RelativeLayout>
