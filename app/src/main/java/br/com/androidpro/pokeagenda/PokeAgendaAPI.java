@@ -17,4 +17,7 @@ public interface PokeAgendaAPI {
 
     @GET("pokemon/{id}")
     Call<Pokemon> getPokemon(@Path("id") int id);
+
+    @GET("nometreinador/{id}")
+    Call<String> getNomeTreinador(@Path("id") int id);
 }

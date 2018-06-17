@@ -1,6 +1,7 @@
 package br.com.androidpro.pokeagenda;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,12 +32,12 @@ public class ExibirPokemon extends AppCompatActivity {
         peso = (TextView) findViewById(R.id.exibePesoTextView);
         treinador = (TextView) findViewById(R.id.exibeTreinadorTextView);
         imagem = (ImageView) findViewById(R.id.exibeImageViewPokemon);
-
-        nome.setText("Pokemon Teste");
-        especie.setText("Fire on Babilon");
-        altura.setText("180cm");
-        peso.setText("8.5kg");
-        treinador.setText("Isaacson");
+        Intent myIntent = getIntent();
+        nome.setText(myIntent.getStringExtra("nomePokemon"));
+        especie.setText(myIntent.getStringExtra("especie"));
+        altura.setText(String.valueOf(myIntent.getDoubleExtra("altura", 0)) + " m");
+        peso.setText(String.valueOf(myIntent.getDoubleExtra("peso", 0)) + " kg");
+        treinador.setText(myIntent.getStringExtra("nomeTreinador"));
 
     }
 

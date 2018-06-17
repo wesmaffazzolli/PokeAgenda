@@ -17,9 +17,6 @@ import retrofit2.Response;
 public class ConsultarPokemons extends AppCompatActivity {
 
     ListView list;
-    String[] pokemon = {};
-    String[] especie = {};
-    Integer[] imageId = {R.drawable.coca, R.drawable.fanta};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +42,20 @@ public class ConsultarPokemons extends AppCompatActivity {
                         call.enqueue(new Callback<Pokemon>() {
                             @Override
                             public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
-                                chamaActivity(ExibirPokemon.class);
+                                final Pokemon pokemonzin = response.body();
+                                Call<String> call2 = new RetrofitConfig().getPokeAgendaAPI().getNomeTreinador(pokemonzin.getIdTreinador());
+                                call2.enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        String nome = response.body();
+                                        chamaActivity(ExibirPokemon.class, pokemonzin, nome);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+                                        Log.e("PokeAgendaAPI   ", "Erro ao buscar nome do treinador: " + t.getMessage());
+                                    }
+                                });
                             }
 
                             @Override
@@ -77,8 +87,13 @@ public class ConsultarPokemons extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void chamaActivity(Class cls) {
+    public void chamaActivity(Class cls, final Pokemon p, String nome) {
         Intent it = new Intent(this, cls);
+        it.putExtra("nomePokemon", p.getNomePokemon());
+        it.putExtra("especie", p.getEspecie());
+        it.putExtra("altura", p.getAltura());
+        it.putExtra("peso", p.getPeso());
+        it.putExtra("nomeTreinador", nome);
         startActivity(it);
     }
 }
