@@ -2,6 +2,7 @@ package br.com.androidpro.pokeagenda;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,6 +20,7 @@ public class ConsultarPokemons extends AppCompatActivity {
 
     ListView list;
     String[] pokemon = {"Coca", "Fanta"};
+    ArrayList<Pokemon> pokemons = new ArrayList<Pokemon>();
     String[] especie = {"Fogo", "Água"};
     Integer[] imageId = {R.drawable.coca, R.drawable.fanta};
 
@@ -28,16 +31,16 @@ public class ConsultarPokemons extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        Call<ArrayList<Pokemon>> call = new RetrofitConfig().getPokeAgendaAPI().getPokemons();
-        call.enqueue(new Callback<ArrayList<Pokemon>>() {
+        Call<String> call = new RetrofitConfig().getPokeAgendaAPI().getPokemons();
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<ArrayList<Pokemon>> call, Response<ArrayList<Pokemon>> response) {
-
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.e("PokeAgendaAPI   ", "Sucesso ao buscar a lista de pokemons:" + response.message());
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Pokemon>> call, Throwable t) {
-
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("PokeAgendaAPI   ", "Erro ao buscar a lista de pokemons:" + t.getMessage());
             }
         });
 

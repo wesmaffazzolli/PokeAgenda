@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Treinador> call, Throwable t) {
-                    text.setText("Fail");
+                    Log.e("PokeAgendaAPI   ", "Erro ao buscar o treinador:" + t.getMessage());
                 }
             });
         } else {
