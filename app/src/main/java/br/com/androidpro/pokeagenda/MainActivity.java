@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import retrofit2.Call;
 import retrofit2.Callback;
-
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -46,12 +46,24 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<Treinador>() {
                 @Override
                 public void onResponse(Call<Treinador> call, retrofit2.Response<Treinador> response) {
-                    Treinador treinador = response.body();
+                    final Treinador treinador = response.body();
                     if (treinador == null) {
                         text.setText("Acesso negado!");
                         text.setTextColor(Color.RED);
                     } else {
-                        chamaActivity(NavigationActivity.class, treinador);
+                        Call<Pokemon> call2 = new RetrofitConfig().getPokeAgendaAPI().getPokemonFavorito(treinador.getIdTreinador());
+                        call2.enqueue(new Callback<Pokemon>() {
+                            @Override
+                            public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
+                                Pokemon fav = response.body();
+                                chamaActivity(NavigationActivity.class, treinador, fav);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Pokemon> call, Throwable t) {
+
+                            }
+                        });
                         text.setText("Login");
                         text.setTextColor(Color.BLACK);
                         usuario.setText("");
@@ -70,10 +82,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void chamaActivity(Class cls, Treinador tr) {
+    public void chamaActivity(Class cls, Treinador tr, Pokemon fav) {
         Intent it = new Intent(this, cls);
         it.putExtra("idTreinador",tr.getIdTreinador());
         it.putExtra("nomeTreinador",tr.getNomeTreinador());
+        it.putExtra("nomeFavorito", fav.getNomePokemon());
         startActivity(it);
     }
 }

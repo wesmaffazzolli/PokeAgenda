@@ -23,12 +23,14 @@ public class NavigationActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Intent myIntent = getIntent();
         TextView nomeTreinador = findViewById(R.id.nomeTreinadorTextView);
+        TextView nomeFavorito = findViewById(R.id.pokemonFavoritoTextView);
         nomeTreinador.setText(myIntent.getStringExtra("nomeTreinador"));
+        nomeFavorito.setText("Pokemon Favorito: " + myIntent.getStringExtra("nomeFavorito"));
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
