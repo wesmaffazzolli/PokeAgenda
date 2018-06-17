@@ -8,6 +8,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ConsultarPokemons extends AppCompatActivity {
 
     ListView list;
@@ -22,6 +28,18 @@ public class ConsultarPokemons extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Call<ArrayList<Pokemon>> call = new RetrofitConfig().getPokeAgendaAPI().getPokemons();
+        call.enqueue(new Callback<ArrayList<Pokemon>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Pokemon>> call, Response<ArrayList<Pokemon>> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Pokemon>> call, Throwable t) {
+
+            }
+        });
 
         ListCell adapter = new ListCell(ConsultarPokemons.this, pokemon, especie, imageId);
         list = (ListView) findViewById(R.id.list);

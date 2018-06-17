@@ -51,8 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/senhaEditText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:onClick="autenticar"
+        android:layout_marginTop="21dp"
         android:text="LOGIN"
         android:textAppearance="@android:style/TextAppearance.Medium" />
 </android.widget.RelativeLayout>
