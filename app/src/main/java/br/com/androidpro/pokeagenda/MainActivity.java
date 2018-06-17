@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Treinador> call, Throwable t) {
-                    Log.e("PokeAgendaAPI   ", "Erro ao buscar o treinador:" + t.getMessage());
+                    Log.e("PokeAgendaAPI   ", "Erro ao buscar o treinador: " + t.getMessage());
                 }
             });
         } else {

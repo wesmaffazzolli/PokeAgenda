@@ -1,6 +1,7 @@
 package br.com.androidpro.pokeagenda;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -11,6 +12,9 @@ public interface PokeAgendaAPI {
     @GET("autenticar/{login}/{senha}")
     Call<Treinador> autenticar(@Path("login") String login, @Path("senha") String senha);
 
-    @GET("/")
-    Call<String> getPokemons();
+    @GET("all")
+    Call<ArrayList<Pokemon>> getPokemons();
+
+    @GET("pokemon/{id}")
+    Call<Pokemon> getPokemon(@Path("id") int id);
 }
