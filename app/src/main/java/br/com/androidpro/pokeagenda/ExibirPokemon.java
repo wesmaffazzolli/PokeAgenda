@@ -53,7 +53,7 @@ public class ExibirPokemon extends AppCompatActivity {
         //define a mensagem
         builder.setMessage(msg);
         //define um botão como positivo
-        builder.setPositiveButton("Ok!", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
 
             }

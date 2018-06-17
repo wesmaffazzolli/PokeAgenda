@@ -23,4 +23,7 @@ public interface PokeAgendaAPI {
 
     @GET("pokemonfavorito/{id}")
     Call<Pokemon> getPokemonFavorito(@Path("id") int id);
+
+    @GET("search/{nome}")
+    Call<Pokemon> searchPokemon(@Path("nome") String nome);
 }

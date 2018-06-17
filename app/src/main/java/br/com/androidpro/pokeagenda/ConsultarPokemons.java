@@ -37,7 +37,6 @@ public class ConsultarPokemons extends AppCompatActivity {
                 list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int arg2, long arg3) {
-                        //Toast.makeText(ConsultarPokemons.this, "Clicou: " + arg2, Toast.LENGTH_SHORT).show();
                         Call<Pokemon> call = new RetrofitConfig().getPokeAgendaAPI().getPokemon(arg2+1);
                         call.enqueue(new Callback<Pokemon>() {
                             @Override
