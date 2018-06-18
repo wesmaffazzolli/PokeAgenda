@@ -48,7 +48,7 @@
         android:layout_marginTop="17dp"
         android:ems="10"
         android:hint="Peso"
-        android:inputType="textPersonName" />
+        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/alturaEditText"
@@ -59,7 +59,7 @@
         android:layout_marginTop="18dp"
         android:ems="10"
         android:hint="Altura"
-        android:inputType="textPersonName" />
+        android:inputType="numberDecimal" />
 
     <Button
         android:id="@+id/buttonSelecionarImagem"

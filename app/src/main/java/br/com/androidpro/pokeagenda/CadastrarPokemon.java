@@ -14,12 +14,17 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.media.MediaRecorder.VideoSource.CAMERA;
 
@@ -87,11 +92,25 @@ public class CadastrarPokemon extends AppCompatActivity {
     protected void enviarFormularioCadastro(View view) {
         if(!nome.getText().toString().isEmpty() && !especie.getText().toString().isEmpty() && !altura.getText().toString().isEmpty() && !peso.getText().toString().isEmpty()) {
             if(imagem.getDrawable() != null) {
-                if("cadastroDeuBoa".equals("cadastroDeuBoa")) {
-                    instaciaDialog("Sucesso!", "O seu cadastro foi realizado.");
-                } else {
-                    instaciaDialog("Falha!", "O seu cadastro não pôde ser realizado.");
-                }
+                Message message = new Message(
+                        "nomePokemon", nome.getText().toString(),
+                        "especie", especie.getText().toString(),
+                        "peso", peso.getText().toString(),
+                        "altura", altura.getText().toString(),
+                        "idTreinador", "1"
+                );
+                Call call = new RetrofitConfig().getPokeAgendaAPI().insertPokemon(message);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) {
+                        instaciaDialog("Sucesso!", "O cadastro foi realizado.");
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        Log.e("PokeAgendaAPI   ", "Erro ao inserir pokemon: " + t.getMessage());
+                    }
+                });
             } else {
                 Toast.makeText(this, "Selecione ou tire uma foto!", Toast.LENGTH_LONG).show();
             }
@@ -166,7 +185,7 @@ public class CadastrarPokemon extends AppCompatActivity {
         //define a mensagem
         builder.setMessage(msg);
         //define um botão como positivo
-        builder.setPositiveButton("Ok!", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
 
             }
