@@ -1,5 +1,6 @@
 package br.com.androidpro.pokeagenda;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void autenticar() {
         if (!usuario.getText().toString().isEmpty() && !senha.getText().toString().isEmpty()) {
+            final ProgressDialog progressDialog;
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Carregando....");
+            progressDialog.setTitle("Aguarde");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
             final String usuarioDigitado = usuario.getText().toString();
             String senhaDigitada = senha.getText().toString();
             Call<Treinador> call = new RetrofitConfig().getPokeAgendaAPI().autenticar(usuarioDigitado, senhaDigitada);
@@ -69,12 +76,15 @@ public class MainActivity extends AppCompatActivity {
                         usuario.setText("");
                         senha.setText("");
                     }
+                    progressDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<Treinador> call, Throwable t) {
                     Log.e("PokeAgendaAPI   ", "Erro ao buscar o treinador: " + t.getMessage());
+                    progressDialog.dismiss();
                 }
+
             });
         } else {
             Toast.makeText(this, "Preencher usuário e senha!", Toast.LENGTH_LONG).show();
