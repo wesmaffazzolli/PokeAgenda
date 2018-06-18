@@ -1,5 +1,6 @@
 package br.com.androidpro.pokeagenda;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -36,6 +37,12 @@ public class PesquisarPokemon extends AppCompatActivity {
 
     protected void pesquisar(View view ) {
         if(!pesquisa.getText().toString().isEmpty()) {
+            final ProgressDialog progressDialog;
+            progressDialog = new ProgressDialog(PesquisarPokemon.this);
+            progressDialog.setMessage("Carregando....");
+            progressDialog.setTitle("Aguarde");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
             Call<Pokemon> call = new RetrofitConfig().getPokeAgendaAPI().searchPokemon(pesquisa.getText().toString());
             call.enqueue(new Callback<Pokemon>() {
                 @Override
@@ -59,11 +66,13 @@ public class PesquisarPokemon extends AppCompatActivity {
                         });
                     }
                     pesquisa.setText("");
+                    progressDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<Pokemon> call, Throwable t) {
                     Log.e("PokeAgendaAPI   ", "Erro ao pesquisar o pokemon: " + t.getMessage());
+                    progressDialog.dismiss();
                 }
             });
         } else {

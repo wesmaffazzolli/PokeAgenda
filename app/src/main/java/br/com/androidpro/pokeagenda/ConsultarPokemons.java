@@ -1,5 +1,6 @@
 package br.com.androidpro.pokeagenda;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,12 @@ public class ConsultarPokemons extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(ConsultarPokemons.this);
+        progressDialog.setMessage("Carregando....");
+        progressDialog.setTitle("Aguarde");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
         Call<ArrayList<Pokemon>> call = new RetrofitConfig().getPokeAgendaAPI().getPokemons();
         call.enqueue(new Callback<ArrayList<Pokemon>>() {
             @Override
@@ -37,6 +44,7 @@ public class ConsultarPokemons extends AppCompatActivity {
                 list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int arg2, long arg3) {
+                        progressDialog.show();
                         Call<Pokemon> call = new RetrofitConfig().getPokeAgendaAPI().getPokemon(arg2+1);
                         call.enqueue(new Callback<Pokemon>() {
                             @Override
@@ -55,22 +63,26 @@ public class ConsultarPokemons extends AppCompatActivity {
                                         Log.e("PokeAgendaAPI   ", "Erro ao buscar nome do treinador: " + t.getMessage());
                                     }
                                 });
+                                progressDialog.dismiss();
                             }
 
                             @Override
                             public void onFailure(Call<Pokemon> call, Throwable t) {
                                 Log.e("PokeAgendaAPI   ", "Erro ao buscar detalhes do pokemon: " + t.getMessage());
+                                progressDialog.dismiss();
                             }
                         });
 
                     }
                 });
                 Log.e("PokeAgendaAPI   ", "Sucesso ao buscar a lista de pokemons: " + response.message());
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<ArrayList<Pokemon>> call, Throwable t) {
                 Log.e("PokeAgendaAPI   ", "Erro ao buscar a lista de pokemons: " + t.getMessage());
+                progressDialog.dismiss();
             }
         });
     }
