@@ -9,6 +9,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface PokeAgendaAPI {
@@ -35,5 +36,9 @@ public interface PokeAgendaAPI {
     @POST("novo")
     Call<Integer> insertPokemon(@Field("nome") String nome, @Field("especie") String especie,
                              @Field("peso") double peso, @Field("altura") double altura,
-                             @Field("idTreinador") int idTreinador, @Field("foto") String foto);
+                             @Field("idTreinador") int idTreinador);
+
+    @PUT("updatefav/{idTreinador}/{idPokemon}")
+    Call<Void> updateFavorito(@Path("idTreinador") int idTreinador, @Path("idPokemon") int idPokemon);
+
 }

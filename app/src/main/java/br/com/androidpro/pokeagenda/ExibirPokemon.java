@@ -1,21 +1,28 @@
 package br.com.androidpro.pokeagenda;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ExibirPokemon extends AppCompatActivity {
 
     TextView nome, especie, altura, peso, treinador;
     ImageView imagem;
     AlertDialog alerta;
+    private int idTreinador, idPokemon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +45,43 @@ public class ExibirPokemon extends AppCompatActivity {
         altura.setText(String.valueOf(myIntent.getDoubleExtra("altura", 0)) + " m");
         peso.setText(String.valueOf(myIntent.getDoubleExtra("peso", 0)) + " kg");
         treinador.setText(myIntent.getStringExtra("nomeTreinador"));
-
+        idTreinador = myIntent.getIntExtra("idTreinador", 0);
+        idPokemon = myIntent.getIntExtra("idPokemon", 0);
     }
 
     protected void favoritar(View view) {
-        instaciaDialog("Sucesso", "O Pokemon foi favoritado!");
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(ExibirPokemon.this);
+        progressDialog.setMessage("Carregando....");
+        progressDialog.setTitle("Aguarde");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+        Call<Void> call = new RetrofitConfig().getPokeAgendaAPI().updateFavorito(idTreinador, idPokemon);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Call<String> call2 = new RetrofitConfig().getPokeAgendaAPI().getNomeTreinador(idTreinador);
+                call2.enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        String nomeT = response.body();
+                        chamaActivity(NavigationActivity.class, nomeT);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.e("PokeAgendaAPI   ", "Erro ao buscar o nome do treinador: " + t.getMessage());
+                    }
+                });
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("PokeAgendaAPI   ", "Erro ao favoritar pokemon: " + t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
     }
 
     private void instaciaDialog(String title, String msg) {
@@ -75,5 +114,13 @@ public class ExibirPokemon extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void chamaActivity(Class cls, String nomeTreinador) {
+        Intent it = new Intent(this, cls);
+        it.putExtra("idTreinador", idTreinador);
+        it.putExtra("nomeTreinador", nomeTreinador);
+        it.putExtra("nomeFavorito", nome.getText().toString());
+        startActivity(it);
     }
 }

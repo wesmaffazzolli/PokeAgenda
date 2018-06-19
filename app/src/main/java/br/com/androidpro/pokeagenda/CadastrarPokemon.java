@@ -102,7 +102,7 @@ public class CadastrarPokemon extends AppCompatActivity {
             if (imagem.getDrawable() != null) {
                 double p = Double.parseDouble(peso.getText().toString());
                 double a = Double.parseDouble(altura.getText().toString());
-                Call<Integer> call = new RetrofitConfig().getPokeAgendaAPI().insertPokemon(nome.getText().toString(), especie.getText().toString(), p, a, idTreinador, "foto");
+                Call<Integer> call = new RetrofitConfig().getPokeAgendaAPI().insertPokemon(nome.getText().toString(), especie.getText().toString(), p, a, idTreinador);
                 call.enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -118,7 +118,7 @@ public class CadastrarPokemon extends AppCompatActivity {
                         realm.copyToRealm(pokemon);
                         realm.commitTransaction();
                         realm.close();
-                        Toast.makeText(getApplicationContext(), "Foto  armazenada  com  sucesso", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Foto  armazenada  com  sucesso", Toast.LENGTH_LONG).show();
                         instaciaDialog("Sucesso!", "O cadastro foi realizado.");
                     }
 

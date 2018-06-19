@@ -21,6 +21,7 @@ public class PesquisarPokemon extends AppCompatActivity {
 
     EditText pesquisa;
     AlertDialog alerta;
+    private int idTreinador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,9 @@ public class PesquisarPokemon extends AppCompatActivity {
         //Código do botão voltar do Android
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        Intent myIntent = getIntent();
+        idTreinador = myIntent.getIntExtra("idTreinador", 0);
 
     }
 
@@ -82,10 +86,12 @@ public class PesquisarPokemon extends AppCompatActivity {
 
     public void chamaActivity(Class cls, final Pokemon p, String nome) {
         Intent it = new Intent(this, cls);
+        it.putExtra("idPokemon", p.getIdPokemon());
         it.putExtra("nomePokemon", p.getNomePokemon());
         it.putExtra("especie", p.getEspecie());
         it.putExtra("altura", p.getAltura());
         it.putExtra("peso", p.getPeso());
+        it.putExtra("idTreinador", idTreinador);
         it.putExtra("nomeTreinador", nome);
         startActivity(it);
     }
