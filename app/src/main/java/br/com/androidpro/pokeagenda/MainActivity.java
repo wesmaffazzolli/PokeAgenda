@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -93,9 +95,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void chamaActivity(Class cls, Treinador tr, Pokemon fav) {
         Intent it = new Intent(this, cls);
-        it.putExtra("idTreinador",tr.getIdTreinador());
-        it.putExtra("nomeTreinador",tr.getNomeTreinador());
-        it.putExtra("nomeFavorito", fav.getNomePokemon());
+        it.putExtra("idTreinador", tr.getIdTreinador());
+        it.putExtra("nomeTreinador", tr.getNomeTreinador());
+        if(fav != null) {
+            it.putExtra("nomeFavorito", fav.getNomePokemon());
+            it.putExtra("idPokemonFav", fav.getIdPokemon());
+        } else {
+            it.putExtra("nomeFavorito", "-");
+            it.putExtra("idPokemonFav", 0);
+        }
         startActivity(it);
     }
 }

@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.ArrayList;
+
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +61,10 @@ public class ConsultarPokemons extends AppCompatActivity {
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
                                         String nome = response.body();
-                                        chamaActivity(ExibirPokemon.class, pokemonzin, nome);
+                                        Realm realm = Realm.getDefaultInstance();
+                                        Pokemon imgPoke = realm.where(Pokemon.class).equalTo("idPokemon", pokemonzin.getIdPokemon()).findFirst();
+                                        chamaActivity(ExibirPokemon.class, pokemonzin, nome, imgPoke);
+                                        realm.close();
                                     }
 
                                     @Override
@@ -102,8 +107,9 @@ public class ConsultarPokemons extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void chamaActivity(Class cls, final Pokemon p, String nome) {
+    public void chamaActivity(Class cls, final Pokemon p, String nome, Pokemon imgPoke) {
         Intent it = new Intent(this, cls);
+        it.putExtra("imgPoke", imgPoke.getFoto());
         it.putExtra("idPokemon", p.getIdPokemon());
         it.putExtra("nomePokemon", p.getNomePokemon());
         it.putExtra("especie", p.getEspecie());

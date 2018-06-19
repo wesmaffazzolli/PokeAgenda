@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,7 +61,10 @@ public class PesquisarPokemon extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
                                 String nome = response.body();
-                                chamaActivity(ExibirPokemon.class, resultado, nome);
+                                Realm realm = Realm.getDefaultInstance();
+                                Pokemon imgPoke = realm.where(Pokemon.class).equalTo("idPokemon", resultado.getIdPokemon()).findFirst();
+                                chamaActivity(ExibirPokemon.class, resultado, nome, imgPoke);
+                                realm.close();
                             }
 
                             @Override
@@ -84,8 +88,9 @@ public class PesquisarPokemon extends AppCompatActivity {
         }
     }
 
-    public void chamaActivity(Class cls, final Pokemon p, String nome) {
+    public void chamaActivity(Class cls, final Pokemon p, String nome, Pokemon imgPoke) {
         Intent it = new Intent(this, cls);
+        it.putExtra("imgPoke", imgPoke.getFoto());
         it.putExtra("idPokemon", p.getIdPokemon());
         it.putExtra("nomePokemon", p.getNomePokemon());
         it.putExtra("especie", p.getEspecie());

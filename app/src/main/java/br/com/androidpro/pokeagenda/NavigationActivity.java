@@ -1,6 +1,8 @@
 package br.com.androidpro.pokeagenda;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,12 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.ByteArrayInputStream;
+
+import io.realm.Realm;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private int idTreinador;
+    ImageView imgFavorito;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +41,17 @@ public class NavigationActivity extends AppCompatActivity
         TextView nomeFavorito = findViewById(R.id.pokemonFavoritoTextView);
         nomeTreinador.setText(myIntent.getStringExtra("nomeTreinador"));
         nomeFavorito.setText("Pokemon Favorito: " + myIntent.getStringExtra("nomeFavorito"));
+        imgFavorito = (ImageView) findViewById(R.id.imageView2);
+        int idPokemonFav = myIntent.getIntExtra("idPokemonFav", 0);
+        Realm realm = Realm.getDefaultInstance();
+        Pokemon imgPoke = realm.where(Pokemon.class).equalTo("idPokemon", idPokemonFav).findFirst();
+        if (imgPoke != null) {
+            byte[] outImage = imgPoke.getFoto();
+            ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
+            Bitmap imageBitmap = BitmapFactory.decodeStream(imageStream);
+            imgFavorito.setImageBitmap(imageBitmap);
+        }
+        realm.close();
         idTreinador = myIntent.getIntExtra("idTreinador", 0);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -86,7 +105,7 @@ public class NavigationActivity extends AppCompatActivity
             chamaActivity(CadastrarPokemon.class, idTreinador);
         } else if (id == R.id.nav_consultar_pokemon) {
             chamaActivity(ConsultarPokemons.class, idTreinador);
-        } else if(id == R.id.nav_pesquisar_pokemon) {
+        } else if (id == R.id.nav_pesquisar_pokemon) {
             chamaActivity(PesquisarPokemon.class, idTreinador);
         } else if (id == R.id.nav_sair) {
             this.finish();
