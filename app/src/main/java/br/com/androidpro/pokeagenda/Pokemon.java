@@ -2,7 +2,11 @@ package br.com.androidpro.pokeagenda;
 
 import java.io.Serializable;
 
-public class Pokemon implements Serializable {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Pokemon extends RealmObject implements Serializable {
+    @PrimaryKey
     private int idPokemon;
     private String nomePokemon;
     private String especie;

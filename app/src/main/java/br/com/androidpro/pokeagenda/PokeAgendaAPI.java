@@ -33,7 +33,7 @@ public interface PokeAgendaAPI {
 
     @FormUrlEncoded
     @POST("novo")
-    Call<Void> insertPokemon(@Field("nome") String nome, @Field("especie") String especie,
+    Call<Integer> insertPokemon(@Field("nome") String nome, @Field("especie") String especie,
                              @Field("peso") double peso, @Field("altura") double altura,
                              @Field("idTreinador") int idTreinador, @Field("foto") String foto);
 }

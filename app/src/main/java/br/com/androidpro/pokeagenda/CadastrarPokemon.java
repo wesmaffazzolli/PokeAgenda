@@ -22,6 +22,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +33,7 @@ import static android.media.MediaRecorder.VideoSource.CAMERA;
 
 public class CadastrarPokemon extends AppCompatActivity {
 
+    public Bitmap imageBitmap;
     private ImageView imagem;
     EditText nome, especie, peso, altura;
     AlertDialog alerta;
@@ -94,25 +98,38 @@ public class CadastrarPokemon extends AppCompatActivity {
     }
 
     protected void enviarFormularioCadastro(View view) {
-        if(!nome.getText().toString().isEmpty() && !especie.getText().toString().isEmpty() && !altura.getText().toString().isEmpty() && !peso.getText().toString().isEmpty()) {
-            //if(imagem.getDrawable() != null) {
-            double p = Double.parseDouble(peso.getText().toString());
-            double a = Double.parseDouble(altura.getText().toString());
-                Call<Void> call = new RetrofitConfig().getPokeAgendaAPI().insertPokemon(nome.getText().toString(), especie.getText().toString(), p, a, idTreinador, "foto");
-                call.enqueue(new Callback<Void>() {
+        if (!nome.getText().toString().isEmpty() && !especie.getText().toString().isEmpty() && !altura.getText().toString().isEmpty() && !peso.getText().toString().isEmpty()) {
+            if (imagem.getDrawable() != null) {
+                double p = Double.parseDouble(peso.getText().toString());
+                double a = Double.parseDouble(altura.getText().toString());
+                Call<Integer> call = new RetrofitConfig().getPokeAgendaAPI().insertPokemon(nome.getText().toString(), especie.getText().toString(), p, a, idTreinador, "foto");
+                call.enqueue(new Callback<Integer>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        int idResposta = response.body();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        byte imagemBytes[] = stream.toByteArray();
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.beginTransaction();
+                        Pokemon pokemon = new Pokemon();
+                        pokemon.setIdPokemon(idResposta);
+                        pokemon.setFoto(imagemBytes);
+                        realm.copyToRealm(pokemon);
+                        realm.commitTransaction();
+                        realm.close();
+                        Toast.makeText(getApplicationContext(), "Foto  armazenada  com  sucesso", Toast.LENGTH_LONG).show();
                         instaciaDialog("Sucesso!", "O cadastro foi realizado.");
                     }
 
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(Call<Integer> call, Throwable t) {
                         Log.e("PokeAgendaAPI   ", "Erro ao inserir pokemon: " + t.getMessage());
                     }
                 });
-            /*} else {
+            } else {
                 Toast.makeText(this, "Selecione ou tire uma foto!", Toast.LENGTH_LONG).show();
-            }*/
+            }
         } else {
             Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_LONG).show();
         }
@@ -126,8 +143,8 @@ public class CadastrarPokemon extends AppCompatActivity {
         //Se o retorno vier da galeria de fotos, este é o código que trata o retorno.
         if (resultCode == RESULT_OK && requestCode == GALERIA_IMAGENS) {
             Uri selectedImage = data.getData();
-            String[] filePath = { MediaStore.Images.Media.DATA };
-            Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
+            String[] filePath = {MediaStore.Images.Media.DATA};
+            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
             c.moveToFirst();
             int columnIndex = c.getColumnIndex(filePath[0]);
             String picturePath = c.getString(columnIndex);
@@ -136,17 +153,17 @@ public class CadastrarPokemon extends AppCompatActivity {
 
             //Adaptar/redimensionar o tamanho da imagem para o tamanho da tela do dispositivo.
             //Resolve o problema do erro: OpenGLRenderer: Bitmap too large to be uploaded into a texture (2432x4320, max=4096x4096)
-            int scale = (int)(imagemGaleria.getHeight() * (512.0 / imagemGaleria.getWidth()));
+            int scale = (int) (imagemGaleria.getHeight() * (512.0 / imagemGaleria.getWidth()));
             Bitmap scaled = Bitmap.createScaledBitmap(imagemGaleria, 512, scale, true);
-
+            imageBitmap = scaled;
             //imagem.setImageBitmap(imagemGaleria);
-            imagem.setImageBitmap(scaled);
+            imagem.setImageBitmap(imageBitmap);
         }
 
         //Se o retorno vier da câmera, este é o código que trata o retorno.
         if (requestCode == TIRAR_FOTO && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageBitmap = (Bitmap) extras.get("data");
             imagem.setImageBitmap(imageBitmap);
         }
     }
@@ -155,7 +172,7 @@ public class CadastrarPokemon extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == android.R.id.home) {
+        if (id == android.R.id.home) {
             this.finish();
         }
 
