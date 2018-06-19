@@ -36,6 +36,7 @@ public class CadastrarPokemon extends AppCompatActivity {
     private final int GALERIA_IMAGENS = 1;
     private final int PERMISSAO_REQUEST = 2;
     private final int TIRAR_FOTO = 3;
+    private int idTreinador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +45,16 @@ public class CadastrarPokemon extends AppCompatActivity {
 
         nome = (EditText) findViewById(R.id.nomeEditText);
         especie = (EditText) findViewById(R.id.especieEditText);
-        peso = (EditText) findViewById(R.id.especieEditText);
+        peso = (EditText) findViewById(R.id.pesoEditText);
         altura = (EditText) findViewById(R.id.alturaEditText);
         imagem = (ImageView) findViewById(R.id.imageViewCadastro);
 
         //Código da flecha de botão voltar nativo do Android
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        Intent myIntent = getIntent();
+        idTreinador = myIntent.getIntExtra("idTreinador", 0);
 
         //Método que faz a permissão para acessar a galeria de fotos
         if (ContextCompat.checkSelfPermission(this,
@@ -91,29 +95,24 @@ public class CadastrarPokemon extends AppCompatActivity {
 
     protected void enviarFormularioCadastro(View view) {
         if(!nome.getText().toString().isEmpty() && !especie.getText().toString().isEmpty() && !altura.getText().toString().isEmpty() && !peso.getText().toString().isEmpty()) {
-            if(imagem.getDrawable() != null) {
-                Message message = new Message(
-                        "nomePokemon", nome.getText().toString(),
-                        "especie", especie.getText().toString(),
-                        "peso", peso.getText().toString(),
-                        "altura", altura.getText().toString(),
-                        "idTreinador", "1"
-                );
-                Call call = new RetrofitConfig().getPokeAgendaAPI().insertPokemon(message);
-                call.enqueue(new Callback() {
+            //if(imagem.getDrawable() != null) {
+            double p = Double.parseDouble(peso.getText().toString());
+            double a = Double.parseDouble(altura.getText().toString());
+                Call<Void> call = new RetrofitConfig().getPokeAgendaAPI().insertPokemon(nome.getText().toString(), especie.getText().toString(), p, a, idTreinador, "foto");
+                call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call call, Response response) {
+                    public void onResponse(Call<Void> call, Response<Void> response) {
                         instaciaDialog("Sucesso!", "O cadastro foi realizado.");
                     }
 
                     @Override
-                    public void onFailure(Call call, Throwable t) {
+                    public void onFailure(Call<Void> call, Throwable t) {
                         Log.e("PokeAgendaAPI   ", "Erro ao inserir pokemon: " + t.getMessage());
                     }
                 });
-            } else {
+            /*} else {
                 Toast.makeText(this, "Selecione ou tire uma foto!", Toast.LENGTH_LONG).show();
-            }
+            }*/
         } else {
             Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_LONG).show();
         }

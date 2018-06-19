@@ -6,6 +6,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -30,6 +31,9 @@ public interface PokeAgendaAPI {
     @GET("search/{nome}")
     Call<Pokemon> searchPokemon(@Path("nome") String nome);
 
+    @FormUrlEncoded
     @POST("novo")
-    Call insertPokemon(@Field("message") Message msg);
+    Call<Void> insertPokemon(@Field("nome") String nome, @Field("especie") String especie,
+                             @Field("peso") double peso, @Field("altura") double altura,
+                             @Field("idTreinador") int idTreinador, @Field("foto") String foto);
 }

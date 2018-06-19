@@ -19,6 +19,8 @@ import android.widget.TextView;
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private int idTreinador;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,7 @@ public class NavigationActivity extends AppCompatActivity
         TextView nomeFavorito = findViewById(R.id.pokemonFavoritoTextView);
         nomeTreinador.setText(myIntent.getStringExtra("nomeTreinador"));
         nomeFavorito.setText("Pokemon Favorito: " + myIntent.getStringExtra("nomeFavorito"));
+        idTreinador = myIntent.getIntExtra("idTreinador", 0);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -80,11 +83,11 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_cadastrar_pokemon) {
-            chamaActivity(CadastrarPokemon.class);
+            chamaActivity(CadastrarPokemon.class, idTreinador);
         } else if (id == R.id.nav_consultar_pokemon) {
-            chamaActivity(ConsultarPokemons.class);
+            chamaActivity(ConsultarPokemons.class, idTreinador);
         } else if(id == R.id.nav_pesquisar_pokemon) {
-            chamaActivity(PesquisarPokemon.class);
+            chamaActivity(PesquisarPokemon.class, idTreinador);
         } else if (id == R.id.nav_sair) {
             this.finish();
         }
@@ -94,8 +97,9 @@ public class NavigationActivity extends AppCompatActivity
         return true;
     }
 
-    public void chamaActivity(Class cls) {
+    public void chamaActivity(Class cls, int id) {
         Intent it = new Intent(this, cls);
+        it.putExtra("idTreinador", id);
         startActivity(it);
     }
 }

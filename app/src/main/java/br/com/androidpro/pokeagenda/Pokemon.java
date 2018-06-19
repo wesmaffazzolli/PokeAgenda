@@ -9,7 +9,7 @@ public class Pokemon implements Serializable {
     private double peso;
     private double altura;
     private int idTreinador;
-    private String foto;
+    private byte[] foto;
 
     public Pokemon() {
     }
@@ -62,11 +62,11 @@ public class Pokemon implements Serializable {
         this.idTreinador = idTreinador;
     }
 
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 }
