@@ -1,6 +1,7 @@
 package br.com.androidpro.pokeagenda;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 import io.realm.Realm;
 import retrofit2.Call;
@@ -41,6 +43,7 @@ public class CadastrarPokemon extends AppCompatActivity {
     private final int PERMISSAO_REQUEST = 2;
     private final int TIRAR_FOTO = 3;
     private int idTreinador;
+    private boolean existe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,33 +103,64 @@ public class CadastrarPokemon extends AppCompatActivity {
     protected void enviarFormularioCadastro(View view) {
         if (!nome.getText().toString().isEmpty() && !especie.getText().toString().isEmpty() && !altura.getText().toString().isEmpty() && !peso.getText().toString().isEmpty()) {
             if (imagem.getDrawable() != null) {
-                double p = Double.parseDouble(peso.getText().toString());
-                double a = Double.parseDouble(altura.getText().toString());
-                Call<Integer> call = new RetrofitConfig().getPokeAgendaAPI().insertPokemon(nome.getText().toString(), especie.getText().toString(), p, a, idTreinador);
-                call.enqueue(new Callback<Integer>() {
+                final ProgressDialog progressDialog;
+                progressDialog = new ProgressDialog(CadastrarPokemon.this);
+                progressDialog.setMessage("Carregando....");
+                progressDialog.setTitle("Aguarde");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                Call<ArrayList<Pokemon>> call2 = new RetrofitConfig().getPokeAgendaAPI().getPokemons();
+                call2.enqueue(new Callback<ArrayList<Pokemon>>() {
                     @Override
-                    public void onResponse(Call<Integer> call, Response<Integer> response) {
-                        int idResposta = response.body();
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                        byte imagemBytes[] = stream.toByteArray();
-                        Realm realm = Realm.getDefaultInstance();
-                        realm.beginTransaction();
-                        Pokemon pokemon = new Pokemon();
-                        pokemon.setIdPokemon(idResposta);
-                        pokemon.setFoto(imagemBytes);
-                        realm.copyToRealm(pokemon);
-                        realm.commitTransaction();
-                        realm.close();
-                        //Toast.makeText(getApplicationContext(), "Foto  armazenada  com  sucesso", Toast.LENGTH_LONG).show();
-                        instaciaDialog("Sucesso!", "O cadastro foi realizado.");
+                    public void onResponse(Call<ArrayList<Pokemon>> call, Response<ArrayList<Pokemon>> response) {
+                        ArrayList<Pokemon> pokemons = response.body();
+                        for (Pokemon p : pokemons) {
+                            if (p.getNomePokemon().toUpperCase().equals(nome.getText().toString().toUpperCase())) {
+                                existe = true;
+                            } else {
+                                existe = false;
+                            }
+                        }
+                        if (existe) {
+                            Toast.makeText(CadastrarPokemon.this, "Pokemon já cadastrado na PokeAgenda!", Toast.LENGTH_LONG).show();
+                        } else {
+                            double p = Double.parseDouble(peso.getText().toString());
+                            double a = Double.parseDouble(altura.getText().toString());
+                            Call<Integer> call1 = new RetrofitConfig().getPokeAgendaAPI().insertPokemon(nome.getText().toString(), especie.getText().toString(), p, a, idTreinador);
+                            call1.enqueue(new Callback<Integer>() {
+                                @Override
+                                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                    int idResposta = response.body();
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                                    byte imagemBytes[] = stream.toByteArray();
+                                    Realm realm = Realm.getDefaultInstance();
+                                    realm.beginTransaction();
+                                    Pokemon pokemon = new Pokemon();
+                                    pokemon.setIdPokemon(idResposta);
+                                    pokemon.setFoto(imagemBytes);
+                                    realm.copyToRealm(pokemon);
+                                    realm.commitTransaction();
+                                    realm.close();
+                                    instaciaDialog("Sucesso!", "O cadastro foi realizado.");
+                                }
+
+                                @Override
+                                public void onFailure(Call<Integer> call, Throwable t) {
+                                    Log.e("PokeAgendaAPI   ", "Erro ao inserir pokemon: " + t.getMessage());
+                                }
+                            });
+                        }
+                        progressDialog.dismiss();
                     }
 
                     @Override
-                    public void onFailure(Call<Integer> call, Throwable t) {
-                        Log.e("PokeAgendaAPI   ", "Erro ao inserir pokemon: " + t.getMessage());
+                    public void onFailure(Call<ArrayList<Pokemon>> call, Throwable t) {
+                        Log.e("PokeAgendaAPI   ", "Erro ao buscar pokemons: " + t.getMessage());
+                        progressDialog.dismiss();
                     }
                 });
+
             } else {
                 Toast.makeText(this, "Selecione ou tire uma foto!", Toast.LENGTH_LONG).show();
             }
