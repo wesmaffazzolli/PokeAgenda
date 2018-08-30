@@ -20,7 +20,7 @@ public class RetrofitConfig {
                 .setLenient()
                 .create();
         this.retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.182:8080/SistemaCentral/webresources/pokeagenda/")
+                .baseUrl("http://192.168.43.234:8080/SistemaCentral/webresources/pokeagenda/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
